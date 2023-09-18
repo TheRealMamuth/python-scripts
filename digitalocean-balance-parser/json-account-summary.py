@@ -82,9 +82,10 @@ def main():
 💰 Total Month to Date Balance (PLN): {total_month_to_date_balance_pln:.2f}
 🔒 Total Account Balance (USD): {total_account_balance:.2f}
 📈 Total Month to Date Usage (USD): {total_month_to_date_usage:.2f}
-================ PER ACCOUNT ====================
+** ---===### PER ACCOUNT ###===--- **
 {account_balance_message}
-=================================================
+
+
 """
 
     # If a webhook is provided, send the summary to Discord
