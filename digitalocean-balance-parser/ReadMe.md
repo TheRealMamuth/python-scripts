@@ -13,14 +13,14 @@ This script is designed to process JSON files containing account data. Based on 
 pip install -r requirements.txt
 ```
 
-# How to use this scripts:
+## How to use this scripts:
 
-## get-customer-balance.py
+#### get-customer-balance.py
 ```bash
 doctl balance get -t "YOUR_API_KEY" -o json | python3 "get-customer-balance.py" "your_account_name"
 ```
 
-## json-account-balance.py
+#### json-account-balance.py
 ```bash
 python3 "json-account-summary.py" [--path PATH_TO_FILES] [--webhook "YOUR_WEBHOOK_URL"]
 ```
