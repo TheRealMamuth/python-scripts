@@ -46,18 +46,23 @@ def main():
     
     args = parser.parse_args()
     
-    # Initialize the totals
+    # Initialize the totals and account summaries
     total_month_to_date_balance = 0.0
     total_account_balance = 0.0
     total_month_to_date_usage = 0.0
-    
+    account_summaries = []
+
     # List of JSON files in the specified directory
     files = [os.path.join(args.path, f) for f in os.listdir(args.path) if os.path.isfile(os.path.join(args.path, f)) and f.endswith('.json')]
     
-    # Process each JSON file and update the totals
+    # Process each JSON file and update the totals and account summaries
     for file_name in files:
         with open(file_name, 'r') as f:
             data = json.load(f)
+            account_name = os.path.basename(file_name).replace(".json", "")
+            account_summary = f"{account_name}: {data['month_to_date_balance']} USD"
+            account_summaries.append(account_summary)
+            
             total_month_to_date_balance += float(data['month_to_date_balance'])
             total_account_balance += float(data['account_balance'])
             total_month_to_date_usage += float(data['month_to_date_usage'])
@@ -69,12 +74,17 @@ def main():
 
     total_month_to_date_balance_pln = total_month_to_date_balance * usd_to_pln_rate
 
+    # Create the summary message with individual account balances
+    account_balance_message = "\n".join(account_summaries)
     message = f"""
-📊 ** ---===### SUMMARY ###===---**
-💵 Month to Date Balance (USD): {total_month_to_date_balance:.2f} $
-💰 Month to Date Balance (PLN): {total_month_to_date_balance_pln:.2f} zł
-🔒 Account Balance (USD): {total_account_balance:.2f} $
-📈 Month to Date Usage (USD): {total_month_to_date_usage:.2f} $
+📊 ** ---===### SUMMARY ###===--- **
+📈 Total Month to Date Balance (USD): {total_month_to_date_balance:.2f}
+💰 Total Month to Date Balance (PLN): {total_month_to_date_balance_pln:.2f}
+🔒 Total Account Balance (USD): {total_account_balance:.2f}
+📈 Total Month to Date Usage (USD): {total_month_to_date_usage:.2f}
+================ PER ACCOUNT ====================
+{account_balance_message}
+=================================================
 """
 
     # If a webhook is provided, send the summary to Discord
