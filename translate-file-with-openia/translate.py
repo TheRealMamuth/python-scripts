@@ -1,8 +1,9 @@
-import openai
+from openai import OpenAI
+
+client = OpenAI(api_key=api_key)
 import sys
 
 def translate_file(api_key, source_file_path, output_file_path, model="gpt-3.5-turbo", source_language="auto", target_language="English"):
-    openai.api_key = api_key
 
     # Wczytaj zawartość pliku źródłowego
     with open(source_file_path, 'r', encoding='utf-8') as file:
@@ -12,12 +13,10 @@ def translate_file(api_key, source_file_path, output_file_path, model="gpt-3.5-t
     translation_prompt = f"Translate the following text from {source_language} to {target_language}:\n\n{file_content}"
 
     # Wyślij zapytanie do OpenAI używając nowego interfejsu
-    response = openai.Completion.create(
-        model=model,
-        prompt=translation_prompt,
-        max_tokens=1024,
-        temperature=0.5
-    )
+    response = client.completions.create(model=model,
+    prompt=translation_prompt,
+    max_tokens=1024,
+    temperature=0.5)
 
     # Przetłumaczony tekst
     translated_text = response.choices[0].text.strip()
