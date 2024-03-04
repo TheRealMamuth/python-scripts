@@ -9,7 +9,7 @@ def translate_file(api_key, source_file_path, output_file_path, model="gpt-3.5-t
 
     # Prepare the structured input for translation
     messages = [
-        {"role": "system", "content": f"Translate the following text from {source_language} to {target_language}."},
+        {"role": "system", "content": f"Translate the following text, keep the emoji from {source_language} to {target_language}."},
         {"role": "user", "content": file_content}
     ]
 
