@@ -28,10 +28,13 @@ def authenticate():
             token.write(creds.to_json())
     return creds
 
-# Funkcja do wczytania zawartości z pliku
+# Funkcja do wczytania zawartości z pliku i zamiany nowych linii na <br>
 def load_file_content(file_path):
     with open(file_path, 'r') as file:
-        return file.read().strip()
+        content = file.read().strip()
+        # Zamiana nowych linii na <br> w HTML
+        content = content.replace('\n', '<br>')
+    return content
 
 # Funkcja do zamiany ID wideo w szablonie
 def replace_video_id(template, video_url):

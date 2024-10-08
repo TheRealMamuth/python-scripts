@@ -28,10 +28,13 @@ def authenticate():
             token.write(creds.to_json())
     return creds
 
-# Funkcja do wczytania zawartości z pliku
+# Funkcja do wczytania zawartości z pliku i zamiany nowych linii na <br>
 def load_file_content(file_path):
     with open(file_path, 'r') as file:
-        return file.read().strip()
+        content = file.read().strip()
+        # Zamiana nowych linii na <br> w HTML
+        content = content.replace('\n', '<br>')
+    return content
 
 # Funkcja do zamiany ID wideo w szablonie
 def replace_video_id(template, video_url):
@@ -67,7 +70,7 @@ def find_file(extension):
 def main(blog_id, youtube_url):
     # Wczytanie szablonu HTML
     html_template = '''
-    <p>&nbsp;</p><h2><b>🛒 Ingredients:</b></h2><p>TU SKLADNIKI</p><h2>🔪 Preparation:</h2><p>TU PRZYGOTOWANIE</p><h2>🔗&nbsp;Links:</h2><div><div>Facebook:&nbsp; &nbsp;<a href="https://www.facebook.com/KulinarneePrzygody/" target="_blank">https://www.facebook.com/KulinarneePrzygody/</a></div><div>Instagram:&nbsp;&nbsp;<a href="https://www.instagram.com/kulinarneprzygody_/" target="_blank">https://www.instagram.com/kulinarneprzygody_/</a></div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</div><div>Blog:&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<a href="https://kulinarneeprzygody.blogspot.com/" target="_blank">https://kulinarneeprzygody.blogspot.com/</a></div><div><span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp; &nbsp;</span><a href="https://www.kulinarneprzygody.com/" target="_blank">https://www.kulinarneprzygody.com/</a>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</div><div>Pinterest&nbsp; &nbsp; &nbsp;<a href="https://pl.pinterest.com/mnawrolska/kulinarne-przygody/" target="_blank">https://pl.pinterest.com/mnawrolska/kulinarne-przygody/</a></div></div><div><br /></div><h2>&nbsp;📺&nbsp;Watch on YouTube:</h2><div class="separator" style="clear: both; text-align: center;"><iframe allowfullscreen="" class="BLOG_video_class" height="380" src="https://www.youtube.com/embed/fXyEqz_m5A0" width="551" youtube-src-id="fXyEqz_m5A0"></iframe></div><br /><p><br /></p>
+    <p>&nbsp;</p><h2><b>🛒 Ingredients:</b></h2><p>TU SKLADNIKI</p><h2>🔪 Preparation:</h2><p>TU PRZYGOTOWANIE</p><h2>🔗&nbsp;Links:</h2><div><div>Facebook:&nbsp; &nbsp;<a href="https://www.facebook.com/KulinarneePrzygody/" target="_blank">https://www.facebook.com/KulinarneePrzygody/</a></div><div>Instagram:&nbsp;&nbsp;<a href="https://www.instagram.com/kulinarneprzygody_/" target="_blank">https://www.instagram.com/kulinarneprzygody_/</a></div><div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</div><div>Blog:&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<a href="https://kulinarneeprzygody.blogspot.com/" target="_blank">https://kulinarneeprzygody.blogspot.com/</a></div><div><span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp;&nbsp; &nbsp;</span><span>&nbsp; &nbsp;</span><a href="https://www.kulinarneprzygody.com/" target="_blank">https://www.kulinarneprzygody.com/</a>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</div><div>Pinterest&nbsp; &nbsp; &nbsp;<a href="https://pl.pinterest.com/mnawrolska/kulinarne-przygody/" target="_blank">https://pl.pinterest.com/mnawrolska/kulinarne-przygody/</a></div></div><div><br /></div><h2>&nbsp;📺&nbsp;Watch on YouTube:</h2><div class="separator" style="clear: both; text-align: center;"><iframe allowfullscreen="" class="BLOG_video_class" height="380" src="https://www.youtube.com/embed/TU_ID" width="551" youtube-src-id="TU_ID"></iframe></div><br /><p><br /></p>
     '''
 
     # Znalezienie plików z tytułem i składnikami
