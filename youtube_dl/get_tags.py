@@ -1,4 +1,4 @@
-import youtube_dl
+from yt_dlp import YoutubeDL
 import sys
 import re
 
@@ -7,7 +7,7 @@ def get_video_info(url):
         'quiet': True,
         'skip_download': True,
     }
-    with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+    with YoutubeDL(ydl_opts) as ydl:
         info_dict = ydl.extract_info(url, download=False)
     return info_dict
 
@@ -26,10 +26,13 @@ if __name__ == "__main__":
         sys.exit(1)
 
     video_url = sys.argv[1]
-    info_dict = get_video_info(video_url)
-    tags = info_dict.get('tags', [])
-    title = info_dict.get('title', 'video')
+    try:
+        info_dict = get_video_info(video_url)
+        tags = info_dict.get('tags', [])
+        title = info_dict.get('title', 'video')
 
-    print("Tagi wideo:", tags)
-    filename = save_tags_to_file(tags, title)
-    print(f"Tagi zostały zapisane do pliku {filename}.")
+        print("Tagi wideo:", tags)
+        filename = save_tags_to_file(tags, title)
+        print(f"Tagi zostały zapisane do pliku {filename}.")
+    except Exception as e:
+        print(f"Wystąpił błąd: {e}")
