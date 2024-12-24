@@ -25,7 +25,7 @@ LANG_MAP = {
     'pl': 'Polski',
     'en': 'Angielski',
     'de': 'Niemiecki',
-    'zh': 'Chiunski',
+    'zh': 'Chinski',
     'ja': 'Japonski',
     'es': 'Hiszpański',
     'pt': 'Portugalski',
