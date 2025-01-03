@@ -25,7 +25,7 @@ LANG_MAP = {
     'pl': 'Polski',
     'en': 'Angielski',
     'de': 'Niemiecki',
-    'zh': 'Chinski',
+    'zh': 'Chiunski',
     'ja': 'Japonski',
     'es': 'Hiszpański',
     'pt': 'Portugalski',
@@ -195,7 +195,6 @@ def main():
     parser.add_argument('--api', required=True, help='OpenAI API key')
     parser.add_argument('--lang', required=True, help='Lista kodów języków do tłumaczenia (np. en,de,zh)')
     parser.add_argument('--client_secrets', required=False, help='Ścieżka do pliku client_secrets.json')
-    # Dodana opcja --upload
     parser.add_argument('--upload', action='store_true',
                         help='Jeśli podane, to przesyłaj napisy i lokalizacje do YouTube.')
     args = parser.parse_args()
@@ -285,6 +284,9 @@ def main():
     # Jeśli nie ma parametru --upload, kończymy tylko na zapisie plików
     if not args.upload:
         print("Zakończono przetwarzanie (tryb bez przesyłania do YouTube).")
+        
+        # ---- DODAJEMY PRZENOSZENIE PLIKÓW DO OSOBNYCH KATALOGÓW ----
+        move_output_files()
         return
 
     # Poniżej sekcja wysyłania napisów i aktualizacji tytułów/opisów w YouTube
@@ -319,6 +321,37 @@ def main():
             )
 
     print("Zakończono przetwarzanie (tryb z przesyłaniem do YouTube).")
+    
+    # ---- DODAJEMY PRZENOSZENIE PLIKÓW DO OSOBNYCH KATALOGÓW ----
+    move_output_files()
+
+
+def move_output_files():
+    """
+    Tworzy katalogi: srt, title, description.
+    Przenosi wszystkie pliki SRT, tytułów i opisów do odpowiednich katalogów.
+    """
+    # Tworzenie katalogów, jeśli nie istnieją
+    os.makedirs("srt", exist_ok=True)
+    os.makedirs("title", exist_ok=True)
+    os.makedirs("description", exist_ok=True)
+
+    # Przeglądamy aktualny folder i przenosimy pliki
+    for file in os.listdir("."):
+        # SRT-y: oryginalne i tłumaczenia (np. .srt, .srt.pl, .srt.en)
+        if file.endswith(".srt") or ".srt." in file:
+            shutil.move(file, os.path.join("srt", file))
+
+        # Pliki tytułów
+        elif ".title." in file or file.endswith(".title.pl"):
+            shutil.move(file, os.path.join("title", file))
+
+        # Pliki opisów
+        elif ".description." in file or file.endswith(".description.pl"):
+            shutil.move(file, os.path.join("description", file))
+
+    print("Przeniesiono pliki SRT, tytułów oraz opisów do katalogów: srt/, title/ i description/.")
+
 
 if __name__ == '__main__':
     main()
